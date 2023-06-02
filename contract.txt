@@ -39,13 +39,24 @@ contract DPS{
         bool isPaid; // оплачен или нет
     }
 
+    // структура запроса на выплату страховки
+    struct InsuranceRequests{
+        address user; // пользователь, которому нужно выплатить страховку
+        uint insurancePrice; // сумма выплаты
+        bool companyCantPay; // страховой компании не хватает денег
+        bool isPaid; // статус выплаты. true - оплачено, false - не полачено
+    }
+
+    uint systemStartTimestamp; // Временная метка старта системы
     address payable Bank = payable(0xdD870fA1b7C4700F2BD7f44238821C26f7392148); // адрес кошелька банка
     address payable InsuranceCompany = payable(0x583031D1113aD414F02576BD6afaBfb302140225); // адрес кошелька страховой компании
+    uint InsuranceCompanyDebt = 0; // долг страховой компании перед банком
     uint public OneDayValue = 5; // количество секунд, которые принимаются за 1 день
     User[] public users; // массив всех зарегистрированных в системе пользователей
     mapping(address => bytes32) userPasswords; // маппинг паролей зарегистрированных пользователей
     mapping(string => DriverLicense) public licenses; // мапинг водительских удостоверений
     Car[] public cars; // массив машин
+    InsuranceRequests[] public requests; // массив запросов на выплату страховки
 
     constructor(){
         // Сотрудник ДПС
@@ -156,11 +167,14 @@ contract DPS{
         users[userID].carID = carID;
     }
 
-    // Функция для продления водительского удостоверения.
-    // function extendDriverLicense(){}
+    // Функция для продления водительского удостоверения. Принимает индекс пользователя в массиве и новую дату окончания удостоверения
+    function extendDriverLicense(uint userID, string memory newDate) public {
+        require(msg.sender == users[userID].userAddress, "You cant extend somebodys license");
+        require(users[userID].unpaidPenaltys != 0, "You have unpayed penaltys");
+        // еще проверка, что текущая дата не больше, чем за месяц до окончания срока действия удостоверения
 
-    // Функция для оплаты штрафа
-    // function payPenalty() {}
+        licenses[users[userID].driverLicenseID].termLicense = newDate;
+    }
 
     // Функция для расчета страхового взноса пользователя. Принимает индекс пользователя в массиве, возвращает страховой в веях
     function calculateInsurance(uint userID) public view returns(uint) {
@@ -184,7 +198,18 @@ contract DPS{
 
         uint insurance = calculateInsurance(userID);
 
-        InsuranceCompany.transfer(insurance);
+        if (InsuranceCompanyDebt >= insurance){ // если долг страховой больше или равен сумме взноса
+            Bank.transfer(insurance);
+            InsuranceCompanyDebt -= insurance;
+        }
+        else if (InsuranceCompanyDebt < insurance && InsuranceCompanyDebt > 0){ // если долг меньше взноса и больше 0
+            uint rest = insurance - InsuranceCompanyDebt;
+            Bank.transfer(InsuranceCompanyDebt);
+            InsuranceCompany.transfer(rest);
+        }
+        else{ // если долг равен нулю
+            InsuranceCompany.transfer(insurance);
+        }
         users[userID].insuranceFee = insurance;
     }
 
@@ -205,9 +230,11 @@ contract DPS{
 
         if (users[userID].penalties[penaltyID].date + 5 * OneDayValue > block.timestamp){
             Bank.transfer(5 * 10 ** 18);
+            users[userID].unpaidPenaltys -= 1;
         }
         else {
             Bank.transfer(10 * 10 ** 18);
+            users[userID].unpaidPenaltys -= 1;
         }
     }
 
@@ -218,7 +245,27 @@ contract DPS{
         require(keccak256(bytes(users[licenses[licenseID].driverID].driverLicenseID)) == keccak256(bytes(licenseID)), "It's someone else's driver's license");
 
         users[licenses[licenseID].driverID].dtpAmount += 1;
-        
+        if (users[licenses[licenseID].driverID].insuranceFee != 0){
+            requests.push(InsuranceRequests(users[licenses[licenseID].driverID].userAddress, users[licenses[licenseID].driverID].insuranceFee * 10, false, false));
+        }
     }
 
+    // Функция перевода страховки пользователю, попавшему в ДТП. Принимает айди запроса
+    function payInsuranceToUser(uint requestID) public payable {
+        require(msg.sender == InsuranceCompany || msg.sender == Bank, "You cant do this");
+        require(requests[requestID].isPaid == false, "This insurance is paid");
+
+        if (msg.value >= requests[requestID].insurancePrice && msg.sender == InsuranceCompany) {
+            payable(requests[requestID].user).transfer(requests[requestID].insurancePrice);
+            requests[requestID].isPaid = true;
+        } else if (msg.value < requests[requestID].insurancePrice && msg.sender == InsuranceCompany){
+            requests[requestID].companyCantPay = true;
+        }
+
+        if (msg.sender == Bank && requests[requestID].companyCantPay == true){
+            payable(requests[requestID].user).transfer(requests[requestID].insurancePrice);
+            requests[requestID].isPaid = true;
+            InsuranceCompanyDebt += requests[requestID].insurancePrice;
+        }
+    }
 }
