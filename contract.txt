@@ -230,12 +230,13 @@ contract DPS{
 
         if (users[userID].penalties[penaltyID].date + 5 * OneDayValue > block.timestamp){
             Bank.transfer(5 * 10 ** 18);
-            users[userID].unpaidPenaltys -= 1;
         }
         else {
             Bank.transfer(10 * 10 ** 18);
-            users[userID].unpaidPenaltys -= 1;
         }
+
+        users[userID].unpaidPenaltys -= 1;
+        users[userID].penalties[penaltyID].isPaid = true;
     }
 
     // Функция добавления ДТП сотрудником ДПС (если у пользователя оплачен страховой взнос, то ему возвращается 10 кратный ее размер)
