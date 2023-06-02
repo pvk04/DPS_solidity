@@ -10,7 +10,7 @@ contract DPS{
         bool isDPS; // true - сотрудник ДПС, false - не сотрудник
         bool isDriver; // true - водтель, false - не водитель
         uint carID; // айди машины из массива всех машин
-        uint driverLicenseID; // номер водительского удостоверения
+        string driverLicenseID; // номер водительского удостоверения
         uint dtpAmount; // количество ДТП
         uint driverExpirienceYear; // год начала водительского стажа
         uint unpaidPenaltys; // количество неоплаченных штрафов
@@ -39,16 +39,15 @@ contract DPS{
         bool isPaid; // оплачен или нет
     }
 
+    address payable Bank = payable(0xdD870fA1b7C4700F2BD7f44238821C26f7392148); // адрес кошелька банка
+    address payable InsuranceCompany = payable(0x583031D1113aD414F02576BD6afaBfb302140225); // адрес кошелька страховой компании
     uint public OneDayValue = 5; // количество секунд, которые принимаются за 1 день
     User[] public users; // массив всех зарегистрированных в системе пользователей
     mapping(address => bytes32) userPasswords; // маппинг паролей зарегистрированных пользователей
-    mapping(uint => DriverLicense) public licenses; // мапинг водительских удостоверений
+    mapping(string => DriverLicense) public licenses; // мапинг водительских удостоверений
     Car[] public cars; // массив машин
 
     constructor(){
-        // address Bank = ; // адрес кошелька банка
-        // address insuranceCompany = ; // адрес кошелька страховой компании
-
         // Сотрудник ДПС
         User storage dpsWorker1 = users.push();
         // dpsWorker1.userAddress = ;
@@ -82,16 +81,43 @@ contract DPS{
         driver2.unpaidPenaltys = 0;
         // userPasswords[] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123
 
-        //  0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 - 1
+        // Добавление водительских удостоверений
+        DriverLicense storage license1 = licenses["000"];
+        license1.category = 1;
+        license1.termLicense = "11.01.2021";
+
+        DriverLicense storage license2 = licenses["111"];
+        license2.category = 2;
+        license2.termLicense = "12.05.2025";
+
+        DriverLicense storage license3 = licenses["222"];
+        license3.category = 3;
+        license3.termLicense = "09.09.2020";
+
+        DriverLicense storage license4 = licenses["333"];
+        license4.category = 1;
+        license4.termLicense = "13.02.2027";
+
+        DriverLicense storage license5 = licenses["444"];
+        license5.category = 2;
+        license5.termLicense = "10.09.2020";
+
+        DriverLicense storage license6 = licenses["555"];
+        license6.category = 3;
+        license6.termLicense = "24.06.2029";
+
+        DriverLicense storage license7 = licenses["666"];
+        license7.category = 1;
+        license7.termLicense = "31.03.2030";
     }
 
-    //
+    // Функция для авторизации пользователя на интерфейсе. Принимает адрес пользователя и зашифрованный пароль. Возвращает итог сравнения зашифрованных паролей. 
     function login(address user, bytes32 password) public view returns(bool) {
         require(userPasswords[user] != bytes32(0), "You not registered");
         return userPasswords[user] == password;
     }
 
-    // 
+    // Функция для регистрации пользователя в системе. Принимает адрес, зашифрованный пароль и ФИО пользователя.
     function registration(address user, bytes32 password, string memory fio) public {
         require(userPasswords[user] == bytes32(0), "This address is taken");
 
@@ -107,11 +133,11 @@ contract DPS{
         userPasswords[user] = password;
     }
 
-    // Функция добавления водительских прав
-    function registerDriverLicense(uint userID, uint licenseNumber, string memory termLicense, uint categoryLicense) public {
+    // Функция добавления водительских прав водителю. Принимает индекс пользователя в массиве, номер водительского удостоверения, срок действия водительского удостоверения и категорию удостоверения
+    function registerDriverLicense(uint userID, string memory licenseNumber, string memory termLicense, uint categoryLicense) public {
         require(userID < users.length, "user ID is out of range");
         require(userPasswords[users[userID].userAddress] != bytes32(0), "User is not registered");
-        require(users[userID].driverLicenseID == 0, "You already have driver license");
+        require(keccak256(bytes(users[userID].driverLicenseID)) == keccak256(bytes("")), "You already have driver license");
         require(licenses[licenseNumber].category != 0, "This driver license is not in database");
         require(keccak256(bytes(licenses[licenseNumber].termLicense)) == keccak256(bytes(termLicense)), "License inforamtion is incorrect (date)");
         require(licenses[licenseNumber].category == categoryLicense, "License inforamtion is incorrect (category)");
@@ -120,7 +146,7 @@ contract DPS{
         users[userID].driverLicenseID = licenseNumber;
     }
 
-    // Функция добавления автомобиля водителю
+    // Функция добавления автомобиля водителю. Принимает индекс пользователя в массиве пользователей и индекс машины в массиве машин
     function registerCar(uint userID, uint carID) public {
         require(userID < users.length, "user ID is out of range");
         require(carID < cars.length, "car ID is out of range");
@@ -130,45 +156,69 @@ contract DPS{
         users[userID].carID = carID;
     }
 
-    //
+    // Функция для продления водительского удостоверения.
     // function extendDriverLicense(){}
 
-    //
+    // Функция для оплаты штрафа
     // function payPenalty() {}
 
-    //
+    // Функция для расчета страхового взноса пользователя. Принимает индекс пользователя в массиве, возвращает страховой в веях
     function calculateInsurance(uint userID) public view returns(uint) {
         Car storage car = cars[users[userID].carID];
         User storage user = users[userID];
 
-        uint interimSettlement;
-        if (1-int(car.yearsExpluatation)/10 < 0){
-            interimSettlement = uint(1-int(car.yearsExpluatation)/10 * (-1));
+        int interimSettlement = 10 - int(car.yearsExpluatation);
+        if (interimSettlement < 0){
+            interimSettlement = -interimSettlement;
         }
 
-        uint insuranceFee = car.price * uint(interimSettlement)/10 + user.unpaidPenaltys/20 + user.dtpAmount - user.driverExpirienceYear/20;
+        uint insuranceFee = car.price * uint(interimSettlement) + 2 * user.unpaidPenaltys * 10 + user.dtpAmount * 100 - 20 * user.driverExpirienceYear;
 
-        return insuranceFee;
+        return insuranceFee * 10 ** 18 / 100;
     }
 
-    //
-    // function createInsurance(uint userID) public {
+    // Функция для оплаты страхового взноса пользователем. Принимает айди пользователя в массиве и списывает у него средаства в размере страхового взноса
+    function payInsurance(uint userID) public payable {
+        require(users[userID].insuranceFee == 0, "You already paid your insurance fee");
+        require(msg.value == calculateInsurance(userID), "You dont have enough money"); 
 
-    // }
+        uint insurance = calculateInsurance(userID);
 
-    //
-    // function addPenalty(){}
+        InsuranceCompany.transfer(insurance);
+        users[userID].insuranceFee = insurance;
+    }
 
-    //
-    // function addDTP(){}
+    // Функция добавления штрафа водителю сотрудником ДПС. Приннимает номер водительского удостоверения
+    function addPenalty(string memory licenseID) public {
+        require(licenses[licenseID].category != 0, "This license isnt anybodys");
 
-    function returnNull(uint price, uint Years, uint unpaidPenaltys, uint dtpAmount, uint driverExpirienceYear) public view returns(int){
-        uint interimSettlement;
-        if (1-int(Years)/10 < 0){
-            interimSettlement = uint(1-int(Years)/10 * (-1));
+        users[licenses[licenseID].driverID].penalties.push(Penalty(block.timestamp, false));
+        users[licenses[licenseID].driverID].unpaidPenaltys += 1;
+    }
+
+    // Функция для оплаты штрафа. Принимает индекс пользователя в массиве пользователей и индекс штрафа в массиве штрафов
+    function payPenalty(uint userID, uint penaltyID) public payable {
+        require(userID < users.length, "userId is out of range");
+        require(penaltyID < users[userID].penalties.length, "userId is out of range");
+        require(msg.sender == users[userID].userAddress, "You can pay only your penalties");
+        require(users[userID].penalties[penaltyID].isPaid == false, "This penalty is already paid");
+
+        if (users[userID].penalties[penaltyID].date + 5 * OneDayValue > block.timestamp){
+            Bank.transfer(5 * 10 ** 18);
         }
+        else {
+            Bank.transfer(10 * 10 ** 18);
+        }
+    }
 
-        return int(price * uint(interimSettlement)/10 + unpaidPenaltys/5 + dtpAmount - driverExpirienceYear/5);
+    // Функция добавления ДТП сотрудником ДПС (если у пользователя оплачен страховой взнос, то ему возвращается 10 кратный ее размер)
+    function addDTP(string memory licenseID, uint senderID) public {
+        require(users[senderID].userAddress == msg.sender, "Not registered or incorrect userID");
+        require(users[senderID].isDPS == true, "You cant do this");
+        require(keccak256(bytes(users[licenses[licenseID].driverID].driverLicenseID)) == keccak256(bytes(licenseID)), "It's someone else's driver's license");
+
+        users[licenses[licenseID].driverID].dtpAmount += 1;
+        
     }
 
 }
