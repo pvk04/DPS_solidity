@@ -48,8 +48,8 @@ contract DPS{
     }
 
     uint systemStartTimestamp; // Временная метка старта системы
-    address payable Bank = payable(0xdD870fA1b7C4700F2BD7f44238821C26f7392148); // адрес кошелька банка
-    address payable InsuranceCompany = payable(0x583031D1113aD414F02576BD6afaBfb302140225); // адрес кошелька страховой компании
+    address payable Bank = payable(0x88455Dc26131f11ad9e442cb29fbfa61086980BB); // адрес кошелька банка
+    address payable InsuranceCompany = payable(0x35f4508f3f643aA02ac31b38f191106527bd8F46); // адрес кошелька страховой компании
     uint InsuranceCompanyDebt = 0; // долг страховой компании перед банком
     uint public OneDayValue = 5; // количество секунд, которые принимаются за 1 день
     User[] public users; // массив всех зарегистрированных в системе пользователей
@@ -61,36 +61,36 @@ contract DPS{
     constructor(){
         // Сотрудник ДПС
         User storage dpsWorker1 = users.push();
-        // dpsWorker1.userAddress = ;
+        dpsWorker1.userAddress = 0xdA0d2E01854cB87867E683319926E9C8f05953C4;
         dpsWorker1.fio = "Ivanov Ivan Ivanovich";
         dpsWorker1.isDPS = true;
         dpsWorker1.isDriver = true;
         dpsWorker1.driverExpirienceYear = 2;
         dpsWorker1.dtpAmount = 0;
         dpsWorker1.unpaidPenaltys = 0;
-        // userPasswords[] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123
+        userPasswords[0xdA0d2E01854cB87867E683319926E9C8f05953C4] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123
 
         // Водитель 1
         User storage driver1 = users.push();
-        // driver1.userAddress = ;
+        driver1.userAddress = 0x63764ff6531BDDA5AE9A5A20a453d38bD5bC14C1;
         driver1.fio = "Semenov Semen Semenovich";
         driver1.isDPS = false;
         driver1.isDriver = true;
         driver1.driverExpirienceYear = 5;
         driver1.dtpAmount = 0;
         driver1.unpaidPenaltys = 0;
-        // userPasswords[] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123 
+        userPasswords[0x63764ff6531BDDA5AE9A5A20a453d38bD5bC14C1] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123 
 
         // Водитель 2
         User storage driver2 = users.push();
-        // driver2.userAddress = ;
+        driver2.userAddress = 0xAa5D53EFBF07041c2E6C85bA9b4C5AfaA3f9662a;
         driver2.fio = "Petrov Petr Petrovich";
         driver2.isDPS = false;
         driver2.isDriver = true;
         driver2.driverExpirienceYear = 10;
         driver2.dtpAmount = 3;
         driver2.unpaidPenaltys = 0;
-        // userPasswords[] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123
+        userPasswords[0xAa5D53EFBF07041c2E6C85bA9b4C5AfaA3f9662a] =  0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107; // 123
 
         // Добавление водительских удостоверений
         DriverLicense storage license1 = licenses["000"];
