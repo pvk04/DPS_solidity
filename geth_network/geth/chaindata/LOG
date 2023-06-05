@@ -1,0 +1,71 @@
+=============== Jun 5, 2023 (MSK) ===============
+12:34:17.064516 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:34:17.069673 db@open opening
+12:34:17.070952 version@stat F·[] S·0B[] Sc·[]
+12:34:17.071972 db@janitor F·2 G·0
+12:34:17.071972 db@open done T·2.2994ms
+=============== Jun 5, 2023 (MSK) ===============
+12:34:36.617181 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:34:36.617688 version@stat F·[] S·0B[] Sc·[]
+12:34:36.617688 db@open opening
+12:34:36.617688 journal@recovery F·1
+12:34:36.619260 journal@recovery recovering @1
+12:34:36.620298 version@stat F·[] S·0B[] Sc·[]
+12:34:36.627665 db@janitor F·2 G·0
+12:34:36.627665 db@open done T·9.977ms
+12:58:04.680241 db@close closing
+12:58:04.680241 db@close done T·0s
+=============== Jun 5, 2023 (MSK) ===============
+13:00:20.442385 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:00:20.442385 version@stat F·[] S·0B[] Sc·[]
+13:00:20.442385 db@open opening
+13:00:20.442385 journal@recovery F·1
+13:00:20.442385 journal@recovery recovering @2
+13:00:20.472763 memdb@flush created L0@4 N·21278 S·2MiB "\x00\x00\xae..\x82\x88\x11,v497":"\xff\xfc\x94..\xa5\x05\xa1,v626"
+13:00:20.472763 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+13:00:20.482809 db@janitor F·3 G·0
+13:00:20.482809 db@open done T·40.4242ms
+=============== Jun 5, 2023 (MSK) ===============
+13:01:45.661320 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:01:45.661320 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+13:01:45.661320 db@open opening
+13:01:45.661320 journal@recovery F·1
+13:01:45.662355 journal@recovery recovering @5
+13:01:45.664426 memdb@flush created L0@7 N·1 S·199B "unc..own,v21280":"unc..own,v21280"
+13:01:45.666467 version@stat F·[2] S·2MiB[2MiB] Sc·[0.50]
+13:01:45.672615 db@janitor F·4 G·0
+13:01:45.672615 db@open done T·11.295ms
+13:03:18.740972 db@close closing
+13:03:18.740972 db@close done T·0s
+=============== Jun 5, 2023 (MSK) ===============
+13:04:11.951868 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:04:11.951868 version@stat F·[2] S·2MiB[2MiB] Sc·[0.50]
+13:04:11.951868 db@open opening
+13:04:11.951868 journal@recovery F·1
+13:04:11.953766 journal@recovery recovering @8
+13:04:11.955879 memdb@flush created L0@10 N·4 S·299B "Sna..tor,v21283":"unc..own,v21282"
+13:04:11.956582 version@stat F·[3] S·2MiB[2MiB] Sc·[0.75]
+13:04:11.963889 db@janitor F·5 G·0
+13:04:11.963889 db@open done T·12.0211ms
+13:12:40.762833 db@close closing
+13:12:40.763437 db@close done T·603.9µs
+=============== Jun 5, 2023 (MSK) ===============
+13:14:26.305657 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:14:26.305657 version@stat F·[3] S·2MiB[2MiB] Sc·[0.75]
+13:14:26.305657 db@open opening
+13:14:26.305657 journal@recovery F·1
+13:14:26.307701 journal@recovery recovering @11
+13:14:26.309714 memdb@flush created L0@13 N·5 S·309B "Sna..tor,v21289":"unc..own,v21287"
+13:14:26.310721 version@stat F·[4] S·2MiB[2MiB] Sc·[1.00]
+13:14:26.316871 db@janitor F·6 G·0
+13:14:26.316871 db@open done T·11.2143ms
+13:14:26.316871 table@compaction L0·4 -> L1·0 S·2MiB Q·21292
+13:14:26.341377 table@build created L1@16 N·19729 S·2MiB "\x00\x00\xae..\x82\x88\x11,v497":"\xdf\xe9\xbe..\xef\x81\xd0,v534"
+13:14:26.344940 table@build created L1@17 N·1536 S·176KiB "\xdf\xeb>..\x96\xee#,v865":"\xff\xfc\x94..\xa5\x05\xa1,v626"
+13:14:26.344940 version@stat F·[0 2] S·2MiB[0B 2MiB] Sc·[0.00 0.02]
+13:14:26.346085 table@compaction committed F-2 S-495B Ke·0 D·23 T·29.2144ms
+13:14:26.346634 table@remove removed @10
+13:14:26.346634 table@remove removed @7
+13:14:26.347144 table@remove removed @4
+13:15:06.530081 db@close closing
+13:15:06.530587 db@close done T·506.3µs

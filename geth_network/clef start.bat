@@ -1,0 +1,1 @@
+start powershell -noexit clef --chainid 15 --http --http.addr 0.0.0.0 --http.vhosts '*' --suppress-bootwarn --nousb --rules ./clef/rules.js

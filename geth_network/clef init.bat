@@ -1,0 +1,1 @@
+clef --keystore .\keystore\ --configdir ./clef --chainid 15 --suppress-bootwarn init

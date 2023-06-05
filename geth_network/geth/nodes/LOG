@@ -1,0 +1,69 @@
+=============== Jun 5, 2023 (MSK) ===============
+12:34:36.883116 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:34:36.898095 db@open opening
+12:34:36.898899 version@stat F·[] S·0B[] Sc·[]
+12:34:36.900525 db@janitor F·2 G·0
+12:34:36.900525 db@open done T·1.924ms
+12:58:05.181077 db@close closing
+12:58:05.181077 db@close done T·0s
+=============== Jun 5, 2023 (MSK) ===============
+13:00:20.537053 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:00:20.537053 version@stat F·[] S·0B[] Sc·[]
+13:00:20.537053 db@open opening
+13:00:20.537053 journal@recovery F·1
+13:00:20.537053 journal@recovery recovering @1
+13:00:20.545894 memdb@flush created L0@2 N·12207 S·305KiB "loc..seq,v28":"version,v1"
+13:00:20.545894 version@stat F·[1] S·305KiB[305KiB] Sc·[0.25]
+13:00:20.555999 db@janitor F·3 G·0
+13:00:20.555999 db@open done T·18.9468ms
+=============== Jun 5, 2023 (MSK) ===============
+13:01:45.727342 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:01:45.727342 version@stat F·[1] S·305KiB[305KiB] Sc·[0.25]
+13:01:45.727342 db@open opening
+13:01:45.727342 journal@recovery F·1
+13:01:45.728431 journal@recovery recovering @3
+13:01:45.729681 memdb@flush created L0@5 N·43 S·1KiB "loc..seq,v12235":"n:\xea..ail,v12232"
+13:01:45.731271 version@stat F·[2] S·307KiB[307KiB] Sc·[0.50]
+13:01:45.736081 db@janitor F·4 G·0
+13:01:45.736081 db@open done T·8.7397ms
+13:01:45.745892 table@compaction L0·2 -> L1·0 S·307KiB Q·12253
+13:01:45.752451 table@build created L1@8 N·5601 S·207KiB "loc..seq,v12235":"version,v1"
+13:01:45.752451 version@stat F·[0 1] S·207KiB[0B 207KiB] Sc·[0.00 0.00]
+13:01:45.752960 table@compaction committed F-1 S-99KiB Ke·0 D·6649 T·7.0678ms
+13:01:45.753968 table@remove removed @2
+=============== Jun 5, 2023 (MSK) ===============
+13:04:12.014554 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:04:12.015108 version@stat F·[0 1] S·207KiB[0B 207KiB] Sc·[0.00 0.00]
+13:04:12.015156 db@open opening
+13:04:12.015156 journal@recovery F·1
+13:04:12.016303 journal@recovery recovering @6
+13:04:12.017918 memdb@flush created L0@9 N·592 S·19KiB "loc..seq,v12287":"n:\xfe..ong,v12610"
+13:04:12.019088 version@stat F·[1 1] S·227KiB[19KiB 207KiB] Sc·[0.25 0.00]
+13:04:12.024296 db@janitor F·5 G·1
+13:04:12.024296 db@janitor removing table-5
+13:04:12.024296 db@open done T·9.1402ms
+13:04:12.034140 table@compaction L0·1 -> L1·1 S·227KiB Q·12846
+13:04:12.037739 table@build created L1@12 N·6109 S·225KiB "loc..seq,v12287":"version,v1"
+13:04:12.037739 version@stat F·[0 1] S·225KiB[0B 225KiB] Sc·[0.00 0.00]
+13:04:12.039788 table@compaction committed F-1 S-1KiB Ke·0 D·84 T·5.6483ms
+13:04:12.040799 table@remove removed @8
+13:12:41.076815 db@close closing
+13:12:41.076815 db@close done T·0s
+=============== Jun 5, 2023 (MSK) ===============
+13:14:26.374187 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:14:26.374767 version@stat F·[0 1] S·225KiB[0B 225KiB] Sc·[0.00 0.00]
+13:14:26.374767 db@open opening
+13:14:26.374825 journal@recovery F·1
+13:14:26.375859 journal@recovery recovering @10
+13:14:26.379567 memdb@flush created L0@13 N·2890 S·93KiB "loc..seq,v12870":"n:\xfd..ail,v13508"
+13:14:26.380649 version@stat F·[1 1] S·318KiB[93KiB 225KiB] Sc·[0.25 0.00]
+13:14:26.385960 db@janitor F·5 G·1
+13:14:26.385960 db@janitor removing table-9
+13:14:26.385960 db@open done T·11.1926ms
+13:14:26.397931 table@compaction L0·1 -> L1·1 S·318KiB Q·15737
+13:14:26.403378 table@build created L1@16 N·8127 S·299KiB "loc..seq,v12870":"version,v1"
+13:14:26.403378 version@stat F·[0 1] S·299KiB[0B 299KiB] Sc·[0.00 0.00]
+13:14:26.404045 table@compaction committed F-1 S-19KiB Ke·0 D·872 T·6.1136ms
+13:14:26.404045 table@remove removed @12
+13:15:07.031159 db@close closing
+13:15:07.032515 db@close done T·1.356ms
